@@ -1,0 +1,29 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+  displayName: 'Install dependencies'
+
+- script: curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  displayName: 'Adding Hashicorp GPG Key'
+
+- script: sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  displayName: 'Adding Hashicorp Linux Repo'
+
+- script: sudo apt-get update && sudo apt-get install terraform
+  displayName: 'Installing Terraform'
+
+- script: cd terraform && terraform init && terraform plan
+  env:
+      AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+      AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+      AWS_REGION: $(AWS_REGION)
