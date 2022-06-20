@@ -17,28 +17,28 @@ resource "databricks_job" "this" {
   name = "autoloader_trigger_once"
   git_source {
     url = "https://github.com/rafaelvp-db/delta-auto-loader-examples"
-    branch = "main"
+    branch = "master"
     provider = "github"
   }
   
   job_cluster {
-    job_cluster_key = "j"
+    job_cluster_key = "medallion_cluster"
     new_cluster {
-      num_workers   = 2
+      num_workers   = 3
       spark_version = data.databricks_spark_version.latest.id
       node_type_id  = data.databricks_node_type.smallest.id
     }
   }
 
-    task {
-      task_key = "bronze"
+  task {
+    task_key = "bronze"
 
-      notebook_task {
-        notebook_path = "notebooks/python/trigger_once/bronze"
-      }
-
-      job_cluster_key = "j"
+    notebook_task {
+      notebook_path = "notebooks/medallion/python/bronze"
     }
+
+    job_cluster_key = "medallion_cluster"
+  }
 
   task {
     task_key = "silver"
@@ -48,10 +48,10 @@ resource "databricks_job" "this" {
     }
 
     notebook_task {
-      notebook_path = "notebooks/python/trigger_once/silver"
+      notebook_path = "notebooks/medallion/python/silver"
     }
 
-    job_cluster_key = "j"
+    job_cluster_key = "medallion_cluster"
   }
 
   task {
@@ -62,11 +62,11 @@ resource "databricks_job" "this" {
     }
 
     notebook_task {
-      notebook_path = "notebooks/python/trigger_once/gold"
+      notebook_path = "notebooks/medallion/python/gold"
       
     }
 
-    job_cluster_key = "j"
+    job_cluster_key = "medallion_cluster"
 
   }
   
