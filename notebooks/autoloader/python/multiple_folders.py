@@ -1,12 +1,10 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC 
-# MAGIC # Demo of Auto Loader
+# MAGIC # Simple Demo of Delta Auto Loader
+# MAGIC <hr/>
+# MAGIC The main benefits of Auto Loader are:
 # MAGIC 
-# MAGIC 1. Azure -- https://docs.microsoft.com/en-us/azure/databricks/spark/latest/structured-streaming/auto-loader
-# MAGIC 2. AWS -- https://docs.databricks.com/spark/latest/structured-streaming/auto-loader.html
-# MAGIC 
-# MAGIC The benefits of Auto Loader are:
 # MAGIC * Incrementally processes new files as they arrive in Amazon S3/Azure ADLS Gen2/Blob. You don’t need to manage any state information on what files arrived.
 # MAGIC * Efficiently tracks the new files arriving by leveraging AWS SNS and AWS SQS [Azure AQS] without having to list all the files in a directory. This approach is scalable even with millions of files in a directory.
 # MAGIC * Automatically sets up AWS SNS and AWS SQS [Azure AQS] required for incrementally processing the files, so you do not need to manually set up the queues.
@@ -16,7 +14,6 @@
 user = dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().apply('user')
 dbutils.fs.rm(f"dbfs:/home/{user}/demo/", True)
 dbutils.fs.rm(f"dbfs:/home/{user}/demo/checkpoint/", True)
-dbutils.fs.rm(f"dbfs:/home/{user}/demo/auto-loader", True)
 dbutils.fs.rm(f"dbfs:/home/{user}/demo/source-data/", True)
 
 # COMMAND ----------
@@ -30,6 +27,14 @@ source_df = spark.read.format("csv") \
 # COMMAND ----------
 
 display(source_df.limit(10))
+
+# COMMAND ----------
+
+source_df.count()
+
+# COMMAND ----------
+
+source_df.filter("id is null").count()
 
 # COMMAND ----------
 
@@ -105,3 +110,15 @@ df_jun_may.writeStream \
 # MAGIC %sql
 # MAGIC 
 # MAGIC select count(1) from loans_jun_may where issue_m in ("Jun", "May")
+
+# COMMAND ----------
+
+# Now that we demonstrated how to use Glob to read from specific folders with Streaming & Auto Loader, 
+# let's load everything into a Delta Table so the data can be processed in subsequent steps.
+
+df.writeStream \
+  .format("delta") \
+  .trigger(once=True) \
+  .option("checkpointLocation", f"dbfs:/home/{user}/demo/checkpoint_table/") \
+  .partitionBy("issue_y", "issue_m") \
+  .toTable("loan_raw_autoloader")
