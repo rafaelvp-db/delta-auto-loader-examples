@@ -21,6 +21,8 @@ Some examples using **Databricks Auto Loader, Spark Structured Streaming, Databr
 
 <img src="https://github.com/rafaelvp-db/delta-auto-loader-examples/blob/master/img/Auto%20Loader@2x.png?raw=true">
 
+Created with [Whimsical](https://https://whimsical.com/)
+
 # Additional Resources
 
 ### Documentation
