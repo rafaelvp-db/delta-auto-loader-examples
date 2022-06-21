@@ -12,6 +12,11 @@ Some examples using **Databricks Auto Loader, Spark Structured Streaming, Databr
 | Databricks Workflows            | `terraform`            | Terraform scripts for declaring a Databricks Workflows job to orchestrate the notebooks from medallion |
 
 
+# Getting Started
+
+* To quickly get started, you can clone this repo into your Databricks Workspace by following the steps [here](https://docs.databricks.com/repos/set-up-git-integration.html)
+* Once the repo is integrated with your workspace, you can view and run all the notebooks in the `notebooks` folder.
+
 # Additional Resources
 
 ### Documentation
