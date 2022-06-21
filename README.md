@@ -3,6 +3,14 @@ Some examples using Databricks Auto Loader, Spark Structured Streaming and Datab
 
 <img src="https://res.cloudinary.com/hevo/images/f_auto,q_auto/v1636944359/hevo-learn/Databricks-Autoloader-Streaming-and-Batch-Loads/Databricks-Autoloader-Streaming-and-Batch-Loads.png?_i=AA" />
 
+## What's part of this repo?
+
+| What                            | Where                | Details                                                                                                |
+|---------------------------------|----------------------|--------------------------------------------------------------------------------------------------------|
+| Delta Auto Loader Examples      | `notebooks/autoloader` | Contains example notebooks of Delta Auto Loader                                                        |
+| Medallion Architecture Examples | `notebooks/medallion`  | Sample notebooks for implementing a simple medallion architecture                                      |
+| Databricks Workflows            | `terraform`            | Terraform scripts for declaring a Databricks Workflows job to orchestrate the notebooks from medallion |
+
 ## Additional Resources
 
 ### Documentation
