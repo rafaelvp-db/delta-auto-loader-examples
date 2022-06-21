@@ -17,6 +17,10 @@ Some examples using **Databricks Auto Loader, Spark Structured Streaming, Databr
 * To quickly get started, you can clone this repo into your Databricks Workspace by following the steps [here](https://docs.databricks.com/repos/set-up-git-integration.html)
 * Once the repo is integrated with your workspace, you can view and run all the notebooks in the `notebooks` folder.
 
+# High Level Architecture
+
+<img src="https://github.com/rafaelvp-db/delta-auto-loader-examples/blob/master/img/Auto%20Loader@2x.png?raw=true">
+
 # Additional Resources
 
 ### Documentation
